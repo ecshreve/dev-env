@@ -4,10 +4,12 @@ set -e
 
 DEBIAN_FRONTEND=noninteractive
 
-apt-add-repository ppa:fish-shell/release-3
-apt-get update 
-apt-get install -y fish
+echo Cloning dotfiles
+git clone --bare https://github.com/ecshreve/figgy.git "$HOME/.cfg"
+git --git-dir="$HOME/.cfg/" --work-tree="$HOME" checkout
+git --git-dir="$HOME/.cfg/" --work-tree="$HOME" pull --force
 
-apt-get autoremove -y 
-apt-get clean autoclean 
-rm -rf /var/lib/{apt,dpkg,cache,log} 
+echo Running fish setup
+fish -c 'setup'
+
+sudo usermod -s /usr/bin/fish eric

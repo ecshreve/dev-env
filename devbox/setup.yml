@@ -1,0 +1,102 @@
+---
+- name: Install tools
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install general packages
+      ansible.builtin.apt:
+        name:
+          - acl
+          - apt-utils
+          - autojump
+          - bash
+          - bat
+          - direnv
+          - entr
+          - fd-find
+          - git
+          - gnupg
+          - htop
+          - iftop
+          - jq
+          - ldnsutils
+          - mosh
+          - mtr
+          - ncdu
+          - net-tools
+          - nodejs
+          - prettyping
+          - python3-pip
+          - ripgrep
+          - rlwrap
+          - shellcheck
+          - thefuck
+          - tmux
+          - tree
+          - unzip
+        update_cache: true
+
+    - name: Link to correct executables
+      ansible.builtin.file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: link
+      loop:
+        - { src: /usr/bin/batcat, dest: /usr/bin/bat }
+        - { src: /usr/bin/fdfind, dest: /usr/bin/fd }
+
+    # - name: Add diff-so-fancy apt repository
+    #   ansible.builtin.apt_repository:
+    #     repo: ppa:aos1/diff-so-fancy
+    #     update_cache: true
+    # - name: Install diff-so-fancy package
+    #   ansible.builtin.apt:
+    #     name: diff-so-fancy
+    #     update_cache: true
+
+    - name: Install fzf from release binary
+      ansible.builtin.unarchive:
+        src: https://github.com/junegunn/fzf/releases/download/0.38.0/fzf-0.38.0-linux_amd64.tar.gz
+        dest: /usr/local/bin
+        remote_src: true
+        creates: /usr/local/bin/fzf
+
+    - name: Install exa from release
+      ansible.builtin.unarchive:
+        src: https://github.com/ogham/exa/releases/download/v0.10.0/exa-linux-x86_64-v0.10.0.zip
+        dest: /usr/local
+        remote_src: true
+        include:
+          - bin/exa
+        creates: /usr/local/bin/exa
+
+    - name: Install go
+      ansible.builtin.unarchive:
+        src: https://go.dev/dl/go1.20.2.linux-amd64.tar.gz
+        dest: /usr/local
+        remote_src: true
+        creates: /usr/local/go/bin/go
+
+    - name: Install pip packages
+      ansible.builtin.pip:
+        executable: pip3
+        name:
+          - black
+          - pyflakes
+          - isort
+          - pytest
+          - pipenv
+          - nose
+        state: present
+
+    - name: Add fish apt repository
+      ansible.builtin.apt_repository:
+        repo: ppa:fish-shell/release-3
+        update_cache: true
+
+    - name: Install fish
+      ansible.builtin.apt:
+        name: fish
+        state: present
+        force: true
+        update_cache: true
