@@ -45,14 +45,14 @@
         - { src: /usr/bin/batcat, dest: /usr/bin/bat }
         - { src: /usr/bin/fdfind, dest: /usr/bin/fd }
 
-    # - name: Add diff-so-fancy apt repository
-    #   ansible.builtin.apt_repository:
-    #     repo: ppa:aos1/diff-so-fancy
-    #     update_cache: true
-    # - name: Install diff-so-fancy package
-    #   ansible.builtin.apt:
-    #     name: diff-so-fancy
-    #     update_cache: true
+    - name: Add diff-so-fancy apt repository
+      ansible.builtin.apt_repository:
+        repo: ppa:aos1/diff-so-fancy
+        update_cache: true
+    - name: Install diff-so-fancy package
+      ansible.builtin.apt:
+        name: diff-so-fancy
+        update_cache: true
 
     - name: Install fzf from release binary
       ansible.builtin.unarchive:
