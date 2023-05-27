@@ -1,0 +1,32 @@
+version: "3"
+
+tasks:
+  build:base:
+    cmds:
+      - task: build-image
+        vars:
+          TAG: base
+    sources:
+      - ./base/**
+
+  build:devbox:
+    deps:
+      - build:base
+    cmds:
+      - task: build-image
+        vars:
+          TAG: devbox
+    sources:
+      - ./devbox/**
+
+  build:all:
+    cmds:
+      - task: build:base
+      - task: build:devbox
+
+  build-image:
+    internal: true
+    dir: ./{{.TAG}}
+    cmds:
+      - docker build -t registry.slab.lan:5000/devenv:{{.TAG}} .
+      - docker push registry.slab.lan:5000/devenv:{{.TAG}}

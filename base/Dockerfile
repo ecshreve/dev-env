@@ -2,9 +2,6 @@ ARG UBUNTU_VERSION=22.04
 
 FROM ubuntu:${UBUNTU_VERSION}
 
-VOLUME /workspace
-WORKDIR /workspace
-
 COPY install-build-tools.sh /tmp/
 RUN /tmp/install-build-tools.sh
 
