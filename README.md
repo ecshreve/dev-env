@@ -28,12 +28,26 @@ base + docker + hashicorp tools + other dev tools + dotfiles installed
 example `.devcontainer.json`:
 ```json
 {
-	"name": "dotbox",
+	"name": "toolbox",
 	"image": "reg.slab.lan:5000/devbox-dotfiles:packer",
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
-	"runArgs": ["--hostname", "dotbox"],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.Go",
+				"redhat.ansible",
+				"GitHub.copilot",
+				"hashicorp.hcl",
+				"hashicorp.terraform",
+				"mutantdino.resourcemonitor",
+				"Gruntfuggly.todo-tree",
+				"esbenp.prettier-vscode"
+			]
+		}
+	},
+	"runArgs": ["--hostname", "toolbox"],
 	"remoteUser": "eric"
 }
 ```

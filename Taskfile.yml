@@ -55,11 +55,8 @@ tasks:
     sources:
       - ./packer/dotfiles/**
 
-
   build:packer:all:
-    cmds:
-      - task: build:packer:base
-      - task: build:packer:docker
-      - task: build:packer:hashi
-      - task: build:packer:tools
-      - task: build:packer:dotfiles
+    deps:
+      - build:packer:dotfiles
+    sources:
+      - ./packer/**/*

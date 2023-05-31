@@ -23,6 +23,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "./go-tools.sh"
+  }
+
+  provisioner "shell" {
     inline = [
       "sudo -u eric curl -Lks https://raw.githubusercontent.com/ecshreve/figgy/main/install | sudo -u eric /bin/sh"
     ]
@@ -31,7 +35,7 @@ build {
   post-processors {
     post-processor "docker-tag" {
       repository = "reg.slab.lan:5000/devbox-dotfiles"
-      tags       = ["0.0.1", "packer", "latest"]
+      tags       = ["0.0.4", "packer", "latest"]
     }
     post-processor "docker-push" {}
   }

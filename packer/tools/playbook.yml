@@ -1,4 +1,4 @@
-- name: Setup hashi workspace
+- name: Setup dev tools for workspace
   hosts: 127.0.0.1
   connection: local
   become: true
@@ -67,7 +67,7 @@
 
     - name: Install go
       ansible.builtin.unarchive:
-        src: https://go.dev/dl/go1.20.2.linux-amd64.tar.gz
+        src: https://go.dev/dl/go1.20.4.linux-amd64.tar.gz
         dest: /usr/local
         remote_src: true
         creates: /usr/local/go/bin/go
