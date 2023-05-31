@@ -82,6 +82,7 @@
           - pytest
           - pipenv
           - nose
+          - ansible-lint
         state: present
 
     - name: Add fish apt repository
