@@ -1,32 +1,65 @@
 version: "3"
 
 tasks:
-  build:base:
-    cmds:
-      - task: build-image
-        vars:
-          TAG: base
-    sources:
-      - ./base/**
-
-  build:devbox:
-    deps:
-      - build:base
-    cmds:
-      - task: build-image
-        vars:
-          TAG: devbox
-    sources:
-      - ./devbox/**
-
-  build:all:
-    cmds:
-      - task: build:base
-      - task: build:devbox
-
-  build-image:
+  build-image:packer:
     internal: true
-    dir: ./{{.TAG}}
+    dir: ./packer/{{.DIR}}
     cmds:
-      - docker build -t registry.slab.lan:5000/devenv:{{.TAG}} .
-      - docker push registry.slab.lan:5000/devenv:{{.TAG}}
+      - packer init . && packer build .
+
+  build:packer:base:
+    cmds:
+      - task: build-image:packer
+        vars:
+          DIR: base
+    sources:
+      - ./packer/base/**
+
+  build:packer:docker:
+    deps:
+      - build:packer:base
+    cmds:
+      - task: build-image:packer
+        vars:
+          DIR: docker
+    sources:
+      - ./packer/docker/**
+
+  build:packer:hashi:
+    deps:
+      - build:packer:docker
+    cmds:
+      - task: build-image:packer
+        vars:
+          DIR: hashi
+    sources:
+      - ./packer/hashi/**
+
+  build:packer:tools:
+    deps:
+      - build:packer:hashi
+    cmds:
+      - task: build-image:packer
+        vars:
+          DIR: tools
+    sources:
+      - ./packer/tools/**
+
+  build:packer:dotfiles:
+    deps:
+      - build:packer:tools
+    cmds:
+      - task: build-image:packer
+        vars:
+          DIR: dotfiles
+    sources:
+      - ./packer/dotfiles/**
+
+
+  build:packer:all:
+    cmds:
+      - task: build:packer:base
+      - task: build:packer:docker
+      - task: build:packer:hashi
+      - task: build:packer:tools
+      - task: build:packer:dotfiles

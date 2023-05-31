@@ -4,23 +4,36 @@
 
 ### base
 
-ubuntu 22.04 with minimal system and user configuration
+ubuntu 22.04 with minimal configuration
 
-### devbox
+### docker
 
-base + development tools and configuration from dotfiles repo
+base + docker installed
 
-## usage
+### hashi
+
+base + docker + hashicorp tools installed
+
+### tools
+
+base + docker + hashicorp tools + other dev tools installed
+
+### dotfiles
+
+base + docker + hashicorp tools + other dev tools + dotfiles installed
+
+
+## devcontainer usage
 
 example `.devcontainer.json`:
 ```json
 {
-	"name": "devbox",
-	"image": "registry.slab.lan:5000/devenv:devbox",
+	"name": "dotbox",
+	"image": "reg.slab.lan:5000/devbox-dotfiles:packer",
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
-	"runArgs": ["--hostname", "devbox"],
+	"runArgs": ["--hostname", "dotbox"],
 	"remoteUser": "eric"
 }
 ```

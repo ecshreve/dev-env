@@ -1,0 +1,41 @@
+---
+- name: Setup hashi workspace
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  tasks:
+    - name: Create user
+      ansible.builtin.user:
+        name: "eric"
+        shell: /usr/bin/fish
+        create_home: true
+        state: present
+        password: password
+        uid: 1000
+        groups:
+          - sudo
+          - adm
+          - docker
+
+    - name: Create sudoers override file
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/eric
+        mode: "0440"
+        owner: root
+        group: root
+        content: |
+          eric ALL=(ALL) NOPASSWD:ALL
+
+    - name: Change ownership of workspaces directory
+      ansible.builtin.file:
+        path: /workspaces
+        owner: eric
+        group: eric
+        state: directory
+        
+    - name: Change ownership of home directory
+      ansible.builtin.file:
+        path: /home/eric
+        owner: eric
+        group: eric
+        state: directory

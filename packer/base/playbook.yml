@@ -1,0 +1,33 @@
+---
+- name: Setup devbox workspace
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  tasks:
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: true
+        update_cache: true
+
+    - name: Install general packages
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - bash-completion
+          - build-essential
+          - ca-certificates
+          - curl
+          - entr
+          - git
+          - git-extras
+          - gnupg2
+          - httpie
+          - locales
+          - lsb-release
+          - nano
+          - openssh-client
+          - rsync
+          - software-properties-common
+          - sudo
+          - unzip
+        update_cache: true

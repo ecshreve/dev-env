@@ -1,0 +1,26 @@
+- name: Setup hashi workspace
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  tasks:
+    - name: Add Hashicorp apt key
+      ansible.builtin.apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
+
+    - name: Add Hashicorp apt repo
+      ansible.builtin.apt_repository:
+        repo: "deb https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+        state: present
+
+    - name: Install Hashicorp tools
+      ansible.builtin.apt:
+        name:
+          - terraform
+          - packer
+          - vagrant
+          - vault
+          - consul
+          - nomad
+        update_cache: true
+        

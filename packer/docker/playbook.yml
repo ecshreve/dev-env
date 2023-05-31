@@ -1,0 +1,53 @@
+- name: Setup docker workspace
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  tasks:
+    - name: Ensure old versions of Docker are NOT installed
+      ansible.builtin.package:
+        name:
+          - docker
+          - docker-engine
+          - docker
+          - docker.io
+          - containerd
+          - runc
+        state: absent
+        update-cache: true
+
+    - name: Add Docker GPG apt Key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      ansible.builtin.apt:
+        name: docker-ce
+        state: present
+        update_cache: true
+
+    - name: Install Docker Module for Python
+      ansible.builtin.pip:
+        executable: pip3
+        name: docker
+
+    - name: Create docker daemon file
+      ansible.builtin.copy:
+        dest: /etc/docker/daemon.json
+        mode: "0644"
+        owner: root
+        group: root
+        content: |
+          {
+            "insecure-registries": [
+                "registry.slab.lan",
+                "reg.slab.lan",
+                "reg.slab.lan:5000",
+                "registry.slab.lan:5000"
+            ]
+          }
