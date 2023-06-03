@@ -4,7 +4,7 @@
 
 ### base
 
-ubuntu 22.04 with minimal configuration
+ubuntu 22.04 with dev environment
 
 ### docker
 
@@ -18,7 +18,7 @@ base + docker + hashicorp tools installed
 
 base + docker + hashicorp tools + other dev tools installed
 
-### dotfiles
+### personal
 
 base + docker + hashicorp tools + other dev tools + dotfiles installed
 
@@ -29,7 +29,7 @@ example `.devcontainer.json`:
 ```json
 {
 	"name": "toolbox",
-	"image": "reg.slab.lan:5000/devbox-dotfiles:packer",
+	"image": "ecshreve/devbox:tools",
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
@@ -37,17 +37,22 @@ example `.devcontainer.json`:
 		"vscode": {
 			"extensions": [
 				"golang.Go",
-				"redhat.ansible",
-				"GitHub.copilot",
-				"hashicorp.hcl",
-				"hashicorp.terraform",
-				"mutantdino.resourcemonitor",
-				"Gruntfuggly.todo-tree",
-				"esbenp.prettier-vscode"
 			]
 		}
 	},
 	"runArgs": ["--hostname", "toolbox"],
-	"remoteUser": "eric"
+}
+```
+
+or use the image with my dotfile configs already baked in:
+```json
+{
+	"name": "toolbox",
+	"image": "ecshreve/devbox",
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
+	"runArgs": ["--hostname", "toolbox"],
+	"remoteUser": "eric",
 }
 ```
