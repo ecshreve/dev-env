@@ -7,7 +7,7 @@ packer {
   }
 }
 
-source "docker" "ubuntu-base" {
+source "docker" "docker-base" {
   image  = "reg.slab.lan:5000/devbox-docker:packer"
   commit = true
   run_command = ["-d", "-i", "-t", "--", "{{.Image}}"]
@@ -15,17 +15,19 @@ source "docker" "ubuntu-base" {
 
 build {
   name    = "devbox-hashi"
-  sources = ["source.docker.ubuntu-base"]
+  sources = ["source.docker.docker-base"]
 
   provisioner "ansible-local" {
     playbook_file = "./playbook.yml"
-    extra_arguments = ["-vvvv"]
+    extra_arguments = ["-v"]
+    galaxy_file = "./requirements.yml"
+    galaxy_roles_path = "./roles"
   }
 
   post-processors {
     post-processor "docker-tag" {
       repository = "reg.slab.lan:5000/devbox-hashi"
-      tags       = ["0.0.2", "packer", "latest"]
+      tags       = ["0.0.3", "packer", "latest"]
     }
     post-processor "docker-push" {}
   }

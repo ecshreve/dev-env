@@ -4,15 +4,13 @@ set -e
 
 # adapted from:
 # https://github.com/devcontainers/features/blob/main/src/go/install.sh
-#
-# Install Go tools that are isImportant && !replacedByGopls based on
-# https://github.com/golang/vscode-go/blob/v0.38.0/src/goToolsInformation.ts
 GO_TOOLS="\
     golang.org/x/tools/gopls@latest \
     honnef.co/go/tools/cmd/staticcheck@latest \
     golang.org/x/lint/golint@latest \
     github.com/mgechev/revive@latest \
-    github.com/go-delve/delve/cmd/dlv@latest"
+    github.com/go-delve/delve/cmd/dlv@latest \
+    github.com/go-task/task/v3/cmd/task@latest"
 
 echo "Installing common Go tools..."
 export PATH=/usr/local/go/bin:${PATH}

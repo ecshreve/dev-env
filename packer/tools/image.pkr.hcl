@@ -7,7 +7,7 @@ packer {
   }
 }
 
-source "docker" "ubuntu-base" {
+source "docker" "hashi-base" {
   image  = "reg.slab.lan:5000/devbox-hashi:packer"
   commit = true
   run_command = ["-d", "-i", "-t", "--", "{{.Image}}"]
@@ -15,17 +15,21 @@ source "docker" "ubuntu-base" {
 
 build {
   name    = "devbox-tools"
-  sources = ["source.docker.ubuntu-base"]
+  sources = ["source.docker.hashi-base"]
 
   provisioner "ansible-local" {
     playbook_file = "./playbook.yml"
-    extra_arguments = ["-vvvv"]
+    extra_arguments = ["-v"]
+  }
+
+  provisioner "shell" {
+    script = "./go-tools.sh"
   }
 
   post-processors {
     post-processor "docker-tag" {
       repository = "reg.slab.lan:5000/devbox-tools"
-      tags       = ["0.0.3", "packer", "latest"]
+      tags       = ["0.0.4", "packer", "latest"]
     }
     post-processor "docker-push" {}
   }
