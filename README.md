@@ -1,5 +1,11 @@
 # dev-env
 
+## dockerhub
+
+the image resulting from the `build:packer:all` task is manually uploaded to dockerhub via the `push:hub` task
+
+https://hub.docker.com/r/ecshreve/devbox
+
 ## images
 
 ### base
