@@ -7,23 +7,19 @@ packer {
   }
 }
 
-source "docker" "ubuntu-base" {
+source "docker" "tools-base" {
   image  = "reg.slab.lan:5000/devbox-tools:packer"
   commit = true
   run_command = ["-d", "-i", "-t", "--", "{{.Image}}"]
 }
 
 build {
-  name    = "devbox-dotfiles"
-  sources = ["source.docker.ubuntu-base"]
+  name    = "devbox-personal"
+  sources = ["source.docker.tools-base"]
 
   provisioner "ansible-local" {
     playbook_file = "./playbook.yml"
-    extra_arguments = ["-vvvv"]
-  }
-
-  provisioner "shell" {
-    script = "./go-tools.sh"
+    extra_arguments = ["-v"]
   }
 
   provisioner "shell" {
@@ -34,8 +30,8 @@ build {
 
   post-processors {
     post-processor "docker-tag" {
-      repository = "reg.slab.lan:5000/devbox-dotfiles"
-      tags       = ["0.0.5", "packer", "latest"]
+      repository = "reg.slab.lan:5000/devbox-personal"
+      tags       = ["0.0.1", "packer", "latest"]
     }
     post-processor "docker-push" {}
   }

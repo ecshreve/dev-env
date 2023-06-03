@@ -1,6 +1,13 @@
 version: "3"
 
+  
+dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
+
 tasks:
+  default:
+    cmds:
+      - task --list-all
+
   build-image:packer:
     internal: true
     dir: ./packer/{{.DIR}}
@@ -45,18 +52,30 @@ tasks:
     sources:
       - ./packer/tools/**
 
-  build:packer:dotfiles:
+  build:packer:personal:
     deps:
       - build:packer:tools
     cmds:
       - task: build-image:packer
         vars:
-          DIR: dotfiles
+          DIR: personal
     sources:
       - ./packer/dotfiles/**
 
   build:packer:all:
     deps:
-      - build:packer:dotfiles
+      - build:packer:personal
     sources:
       - ./packer/**/*
+
+  push:hub:
+    deps:
+      - build:packer:all
+    cmds:
+      - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+      - docker tag reg.slab.lan:5000/devbox-tools:latest $DOCKERHUB_USER/devbox:tools
+      - docker tag reg.slab.lan:5000/devbox-personal:latest $DOCKERHUB_USER/devbox:$DOCKERHUB_TAG
+      - docker tag reg.slab.lan:5000/devbox-personal:latest $DOCKERHUB_USER/devbox:latest
+      - docker push $DOCKERHUB_USER/devbox:tools
+      - docker push $DOCKERHUB_USER/devbox:$DOCKERHUB_TAG
+      - docker push $DOCKERHUB_USER/devbox:latest
