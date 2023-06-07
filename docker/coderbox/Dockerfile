@@ -20,6 +20,9 @@ RUN /tmp/install-ansible.sh
 COPY setup.yml /tmp/
 RUN ansible-playbook /tmp/setup.yml
 
+COPY install-go-tools.sh /tmp/
+RUN /tmp/install-go-tools.sh
+
 COPY dotfile-setup.yml /tmp/
 RUN ansible-playbook /tmp/dotfile-setup.yml
 
