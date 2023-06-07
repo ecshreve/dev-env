@@ -60,7 +60,7 @@ tasks:
         vars:
           DIR: personal
     sources:
-      - ./packer/dotfiles/**
+      - ./packer/personal/**
 
   build:packer:all:
     deps:

@@ -31,7 +31,7 @@ build {
   post-processors {
     post-processor "docker-tag" {
       repository = "reg.slab.lan:5000/devbox-personal"
-      tags       = ["0.0.1", "packer", "latest"]
+      tags       = ["0.0.2", "packer", "latest"]
     }
     post-processor "docker-push" {}
   }

@@ -10,7 +10,8 @@ GO_TOOLS="\
     golang.org/x/lint/golint@latest \
     github.com/mgechev/revive@latest \
     github.com/go-delve/delve/cmd/dlv@latest \
-    github.com/go-task/task/v3/cmd/task@latest"
+    github.com/go-task/task/v3/cmd/task@latest \
+    github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest"
 
 echo "Installing common Go tools..."
 export PATH=/usr/local/go/bin:${PATH}
